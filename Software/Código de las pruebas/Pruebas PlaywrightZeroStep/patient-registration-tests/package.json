@@ -1,0 +1,30 @@
+{
+  "name": "patient-registration-tests",
+  "version": "1.0.0",
+  "description": "Tests automatizados para el formulario de registro de pacientes",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "report": "playwright show-report"
+  },
+  "keywords": [
+    "playwright",
+    "zerostep",
+    "testing",
+    "e2e",
+    "patient-registration",
+    "automation"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@faker-js/faker": "^9.6.0",
+    "@playwright/test": "^1.42.1",
+    "@types/faker": "^6.6.8",
+    "faker": "^5.5.3",
+    "zerostep": "^1.2.1"
+  }
+}

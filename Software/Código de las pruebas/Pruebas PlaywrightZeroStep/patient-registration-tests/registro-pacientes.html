@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Pacientes - Sistema de Gestión de Pacientes</title>
+    <style>
+        :root {
+            --primary: #2c6bab;
+            --secondary: #5a93d1;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --white: #ffffff;
+            --gray: #6c757d;
+            --gray-light: #e9ecef;
+            --border-radius: 4px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        header {
+            background-color: var(--white);
+            padding: 0.8rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 220px;
+            z-index: 100;
+            height: 60px;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 8px;
+            color: var(--secondary);
+        }
+        
+        .search-container {
+            flex-grow: 1;
+            max-width: 500px;
+            margin: 0 20px;
+        }
+        
+        .search-bar {
+            width: 100%;
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+        }
+        
+        .search-bar:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(44, 107, 171, 0.2);
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .notification-icon {
+            position: relative;
+            margin-right: 20px;
+            cursor: pointer;
+        }
+        
+        .notification-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--danger);
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 220px;
+            background-color: var(--primary);
+            color: white;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: all 0.3s;
+            z-index: 200;
+        }
+        
+        .sidebar-header {
+            padding: 20px 15px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-menu {
+            padding: 15px 0;
+        }
+        
+        .menu-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .menu-item:hover, .menu-item.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .menu-item i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex-grow: 1;
+            margin-left: 220px;
+            margin-top: 60px;
+            padding: 20px;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #245d96;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(44, 107, 171, 0.1);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        
+        .form-section {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+        
+        .form-section-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--gray-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .form-section-header h2 {
+            font-size: 18px;
+            color: var(--primary);
+        }
+        
+        .form-section-content {
+            padding: 20px;
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            gap: 20px;
+        }
+        
+        .form-group {
+            flex: 1 1 calc(33.333% - 20px);
+            min-width: 200px;
+        }
+        
+        .form-group-full {
+            flex: 1 1 100%;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .form-label .required {
+            color: var(--danger);
+            margin-left: 3px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(44, 107, 171, 0.2);
+        }
+        
+        select.form-control {
+            appearance: none;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>') no-repeat;
+            background-position: right 10px center;
+            background-color: white;
+            padding-right: 30px;
+        }
+        
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-hint {
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 4px;
+        }
+        
+        .file-upload {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .file-upload-btn {
+            padding: 8px 15px;
+            background-color: var(--light);
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .file-upload-btn:hover {
+            background-color: var(--gray-light);
+        }
+        
+        .file-name {
+            font-size: 13px;
+            color: var(--gray);
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+                overflow: visible;
+            }
+            
+            .sidebar-header {
+                padding: 10px 5px;
+            }
+            
+            .sidebar-header h2, .menu-item span {
+                display: none;
+            }
+            
+            .menu-item {
+                justify-content: center;
+                padding: 15px 5px;
+            }
+            
+            .menu-item i {
+                margin-right: 0;
+                font-size: 20px;
+            }
+            
+            .main-content, header {
+                margin-left: 70px;
+                left: 70px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .form-group, .form-group-full {
+                flex: 1 1 100%;
+            }
+            
+            .search-container {
+                max-width: 150px;
+            }
+            
+            .action-buttons {
+                flex-wrap: wrap;
+            }
+        }
+        
+        @media (max-width: 576px) {            
+            .search-container {
+                display: none;
+            }
+        }
+    </style>
+    <!-- Font Awesome CSS (for icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>MediCare</h2>
+            </div>
+            <div class="sidebar-menu">
+                <a href="../dashboard-principal.html" class="menu-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="../Interfaces/registro-pacientes.html" class="menu-item">
+                    <i class="fas fa-user-injured"></i>
+                    <span>Pacientes</span>
+                </a>
+                <a href="../Interfaces/gestion-citas.html" class="menu-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Citas</span>
+                </a>
+                <a href="../Interfaces/seguimiento-medicamentos.html" class="menu-item" tabindex="-1">
+                    <i class="fas fa-pills"></i>
+                    <span>Medicamentos</span>
+                </a>
+                <a href="../Interfaces/panel-notificaciones.html" class="menu-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Informes</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Header -->
+        <header>
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Buscar pacientes..." tabindex="-1">
+            </div>
+            <div class="header-actions">
+                <div class="notification-icon">
+                    <i class="fas fa-bell fa-lg"></i>
+                    <span class="notification-count">5</span>
+                </div>
+                <div class="user-profile">
+                    <div class="user-avatar">DR</div>
+                    <span>Dr. Rodríguez</span>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <h1 class="page-title">Registro de Paciente</h1>
+            
+            <div class="action-buttons">
+                <button class="btn btn-primary">
+                    <i class="fas fa-save"></i> Guardar
+                </button>
+                <button class="btn btn-outline">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+                <button class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Eliminar
+                </button>
+            </div>
+            
+            <!-- Personal Information Section -->
+            <div class="form-section">
+                <div class="form-section-header">
+                    <h2><i class="fas fa-user"></i> Información Personal</h2>
+                </div>
+                <div class="form-section-content">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName" class="form-label">Nombre<span class="required">*</span></label>
+                            <input type="text" id="firstName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName" class="form-label">Apellidos<span class="required">*</span></label>
+                            <input type="text" id="lastName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="idNumber" class="form-label">Número de Identificación<span class="required">*</span></label>
+                            <input type="text" id="idNumber" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="birthDate" class="form-label">Fecha de Nacimiento<span class="required">*</span></label>
+                            <input type="date" id="birthDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="gender" class="form-label">Género<span class="required">*</span></label>
+                            <select id="gender" class="form-control" required>
+                                <option value="">Seleccionar</option>
+                                <option value="male">Masculino</option>
+                                <option value="female">Femenino</option>
+                                <option value="other">Otro</option>
+                                <option value="not_specified">Prefiero no especificar</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="patientId" class="form-label">ID de Paciente</label>
+                            <input type="text" id="patientId" class="form-control" placeholder="Generado automáticamente" disabled>
+                            <div class="form-hint">Se generará automáticamente al guardar</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone" class="form-label">Teléfono<span class="required">*</span></label>
+                            <input type="tel" id="phone" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="form-label">Correo Electrónico</label>
+                            <input type="email" id="email" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="address" class="form-label">Dirección</label>
+                            <input type="text" id="address" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Medical Information Section -->
+            <div class="form-section">
+                <div class="form-section-header">
+                    <h2><i class="fas fa-heartbeat"></i> Información Médica</h2>
+                </div>
+                <div class="form-section-content">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bloodType" class="form-label">Tipo de Sangre</label>
+                            <select id="bloodType" class="form-control">
+                                <option value="">Seleccionar</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="weight" class="form-label">Peso (kg)</label>
+                            <input type="number" id="weight" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="height" class="form-label">Altura (cm)</label>
+                            <input type="number" id="height" class="form-control">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group-full">
+                            <label for="allergies" class="form-label">Alergias</label>
+                            <textarea id="allergies" class="form-control" placeholder="Registre todas las alergias conocidas del paciente"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group-full">
+                            <label for="chronicConditions" class="form-label">Condiciones Crónicas</label>
+                            <textarea id="chronicConditions" class="form-control" placeholder="Registre condiciones médicas crónicas del paciente"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group-full">
+                            <label for="familyHistory" class="form-label">Antecedentes Médicos Familiares</label>
+                            <textarea id="familyHistory" class="form-control" placeholder="Registre antecedentes médicos familiares relevantes"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group-full">
+                            <label class="form-label">Documentos Médicos</label>
+                            <div class="file-upload">
+                                <label for="medicalDocs" class="file-upload-btn">
+                                    <i class="fas fa-file-upload"></i> Adjuntar Documentos
+                                </label>
+                                <input type="file" id="medicalDocs" style="display: none;" multiple>
+                                <span class="file-name">Ningún archivo seleccionado</span>
+                            </div>
+                            <div class="form-hint">Formatos permitidos: PDF, JPG, PNG (máx. 10MB por archivo)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Emergency Contact Section -->
+            <div class="form-section">
+                <div class="form-section-header">
+                    <h2><i class="fas fa-phone-alt"></i> Contacto de Emergencia</h2>
+                </div>
+                <div class="form-section-content">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="emergencyName" class="form-label">Nombre Completo</label>
+                            <input type="text" id="emergencyName" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="emergencyRelation" class="form-label">Relación</label>
+                            <input type="text" id="emergencyRelation" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="emergencyPhone" class="form-label">Teléfono</label>
+                            <input type="tel" id="emergencyPhone" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Message -->
+    <div class="alert alert-success" style="display: none;" role="alert">
+        Paciente registrado exitosamente
+    </div>
+
+    <script>
+        // Simple script for demonstration purposes
+        document.addEventListener('DOMContentLoaded', function() {
+            // File upload preview
+            document.getElementById('medicalDocs').addEventListener('change', function() {
+                const fileCount = this.files.length;
+                const fileNameSpan = document.querySelector('.file-name');
+                
+                if (fileCount > 0) {
+                    fileNameSpan.textContent = fileCount === 1 
+                        ? this.files[0].name 
+                        : `${fileCount} archivos seleccionados`;
+                } else {
+                    fileNameSpan.textContent = 'Ningún archivo seleccionado';
+                }
+            });
+            
+            // Save button action
+            document.querySelector('.btn-primary').addEventListener('click', function() {
+                const requiredFields = document.querySelectorAll('[required]');
+                let isValid = true;
+                
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        field.style.borderColor = 'var(--danger)';
+                        isValid = false;
+                    } else {
+                        field.style.borderColor = '';
+                    }
+                });
+                
+                if (isValid) {
+                    // Generate a patient ID for demonstration
+                    document.getElementById('patientId').value = 'PAC-' + Math.floor(10000 + Math.random() * 90000);
+                    
+                    // Show success message
+                    const successMessage = document.querySelector('.alert-success');
+                    successMessage.style.display = 'block';
+                    
+                    // Hide success message after 3 seconds
+                    setTimeout(() => {
+                        successMessage.style.display = 'none';
+                    }, 3000);
+                } else {
+                    alert('Por favor complete todos los campos obligatorios');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

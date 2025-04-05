@@ -1,0 +1,55 @@
+Sistema de Gestión de Pacientes para Salud
+
+ Descripción General
+Este proyecto consiste en un sistema web de gestión de pacientes desarrollado como parte del proyecto final de QA 4.0.
+
+ Interfaces Desarrolladas
+- Formulario Registro de pacientes 
+- Dashboard Principal: Vista general de actividades y estadísticas relevantes
+- Perfil de Paciente: Información detallada y editable de cada paciente
+- Gestión de Citas: Calendario interactivo para programación de consultas
+- Gestión de Medicamentos: Registro y seguimiento de prescripciones
+
+
+ Tecnologías y Herramientas Utilizadas
+- Frontend: HTML5, CSS3, JavaScript
+- Diagramas: Mermaid
+- Pruebas Automatizadas: Selenium con c y NUnit, Playwright con ZeroStep y JavaScript en Cursor
+- Diagramación: Mermaid para diagramas como código
+- IA Generativa: Claude y Chat GPT
+
+ Alteraciones
+- Requerimientos: Se encuentran marcadas en rojo
+- Casos de uso: Se encuentran marcadas en rojo
+- Interfaces: Se encuentran dentro de la carpeta Código de la aplicación\Alteradas  (Las cuales incluyen, borrado de campos, eliminación de validaciones y errores de código)
+- Diagramas: se encuentran en la carpeta Documentación\Diagramas con la inicial ALT
+
+
+PRUEBAS AUTOMATIZADAS
+
+Para estas pruebas se utilizó la interfaz registro-pacientes la cual ya viene adjunta y funcional en cada uno de los proyectos, a continuación se mencionan las herramientas y versiones utilizadas
+
+ Pruebas Automatizadas con Selenium
+- Selenium WebDriver: v4.10.0
+- Selenium.WebDriver.ChromeDriver: v114.0.5735.9000
+- Selenium.Support: v4.10.0
+- NUnit: v3.13.3
+- NUnit3TestAdapter: v4.5.0
+- DotNetSeleniumExtras.WaitHelpers: v3.11.0
+- Selenium.WebDriver.GeckoDriver: v0.33.0
+- Selenium.WebDriver.MSEdgeDriver: v114.0.1823.67
+- Newtonsoft.Json: v13.0.3
+- Microsoft.NET.Test.Sdk: v17.6.3
+
+
+
+Pruebas Automatizadas con Playwright
+- @playwright/test: v1.42.1
+- zerostep: v1.2.1
+- @faker-js/faker: v9.6.0
+- faker: v5.5.3
+- @types/faker: v6.6.8
+
+
+ Autor
+[Karen Gonzalez]

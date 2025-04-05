@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Citas - Sistema de Gestión de Pacientes</title>
+    <style>
+        :root {
+            --primary: #2c6bab;
+            --secondary: #5a93d1;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --white: #ffffff;
+            --gray: #6c757d;
+            --gray-light: #e9ecef;
+            --border-radius: 4px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        header {
+            background-color: var(--white);
+            padding: 0.8rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 220px;
+            z-index: 100;
+            height: 60px;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 8px;
+            color: var(--secondary);
+        }
+        
+        .search-container {
+            flex-grow: 1;
+            max-width: 500px;
+            margin: 0 20px;
+        }
+        
+        .search-bar {
+            width: 100%;
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+        }
+        
+        .search-bar:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(44, 107, 171, 0.2);
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .notification-icon {
+            position: relative;
+            margin-right: 20px;
+            cursor: pointer;
+        }
+        
+        .notification-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--danger);
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 220px;
+            background-color: var(--primary);
+            color: white;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: all 0.3s;
+            z-index: 200;
+        }
+        
+        .sidebar-header {
+            padding: 20px 15px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-menu {
+            padding: 15px 0;
+        }
+        
+        .menu-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .menu-item:hover, .menu-item.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .menu-item i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex-grow: 1;
+            margin-left: 220px;
+            margin-top: 60px;
+            padding: 20px;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+        
+        /* Filters Section */
+        .filters-section {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 15px 20px;
+            margin-bottom: 25px;
+        }
+        
+        .filters-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .filter-group {
+            flex: 1 1 200px;
+        }
+        
+        .filter-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .filter-control {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            outline: none;
+        }
+        
+        .filter-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(44, 107, 171, 0.2);
+        }
+        
+        select.filter-control {
+            appearance: none;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>') no-repeat;
+            background-position: right 10px center;
+            background-color: white;
+            padding-right: 30px;
+        }
+        
+        /* Calendar Section */
+        .calendar-container {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .calendar-section {
+            flex: 1 1 65%;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 20px;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .calendar-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .calendar-navigation {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .calendar-nav-btn {
+            background-color: transparent;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+        
+        .calendar-nav-btn:hover {
+            background-color: var(--gray-light);
+        }
+        
+        .view-selector {
+            margin-left: 10px;
+        }
+        
+        .calendar-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .calendar-table th {
+            padding: 10px;
+            text-align: center;
+            font-weight: normal;
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        .calendar-table td {
+            padding: 8px;
+            text-align: center;
+            vertical-align: top;
+            height: 100px;
+            border: 1px solid var(--gray-light);
+            position: relative;
+        }
+        
+        .calendar-date {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            text-align: right;
+        }
+        
+        .current-date {
+            background-color: var(--primary);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+        }
+        
+        .calendar-event {
+            background-color: rgba(90, 147, 209, 0.2);
+            border-left: 3px solid var(--primary);
+            padding: 3px 5px;
+            margin: 2px 0;
+            border-radius: var(--border-radius);
+            font-size: 12px;
+            text-align: left;
+            cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .calendar-event:hover {
+            background-color: rgba(90, 147, 209, 0.3);
+        }
+        
+        .calendar-event.urgent {
+            background-color: rgba(220, 53, 69, 0.2);
+            border-left-color: var(--danger);
+        }
+        
+        .event-more {
+            text-align: center;
+            color: var(--primary);
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 2px;
+        }
+        
+        /* Daily Schedule Section */
+        .schedule-section {
+            flex: 1 1 35%;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .schedule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .schedule-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .schedule-date {
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .schedule-list {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        
+        .appointment-item {
+            padding: 15px;
+            border-radius: var(--border-radius);
+            background-color: var(--light);
+            margin-bottom: 10px;
+            border-left: 4px solid var(--primary);
+            transition: all 0.2s;
+        }
+        
+        .appointment-item:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .appointment-item.urgent {
+            border-left-color: var(--danger);
+        }
+        
+        .appointment-time {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .appointment-patient {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .patient-name {
+            font-weight: 500;
+        }
+        
+        .appointment-type {
+            color: var(--gray);
+            font-size: 13px;
+        }
+        
+        .appointment-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .action-btn {
+            padding: 5px 10px;
+            border-radius: var(--border-radius);
+            background-color: transparent;
+            border: 1px solid var(--gray);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .action-btn:hover {
+            background-color: var(--gray-light);
+        }
+        
+        .action-btn.reschedule {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .action-btn.reschedule:hover {
+            background-color: rgba(44, 107, 171, 0.1);
+        }
+        
+        .action-btn.cancel {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+        
+        .action-btn.cancel:hover {
+            background-color: rgba(220, 53, 69, 0.1);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--gray);
+        }
+        
+        .empty-state i {
+            font-size: 40px;
+            margin-bottom: 10px;
+            opacity: 0.5;
+        }
+        
+        /* Action buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #245d96;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(44, 107, 171, 0.1);
+        }
+        
+        .btn-warning {
+            background-color: var(--warning);
+            color: var(--dark);
+        }
+        
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        
+        /* Modal */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .modal {
+            background-color: white;
+            border-radius: var(--border-radius);
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--gray-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: 500;
+        }
+        
+        .modal-close {
+            background-color: transparent;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: var(--gray);
+        }
+        
+        .modal-close:hover {
+            color: var(--dark);
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            outline: none;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(44, 107, 171, 0.2);
+        }
+        
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid var(--gray-light);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+                overflow: visible;
+            }
+            
+            .sidebar-header {
+                padding: 10px 5px;
+            }
+            
+            .sidebar-header h2, .menu-item span {
+                display: none;
+            }
+            
+            .menu-item {
+                justify-content: center;
+                padding: 15px 5px;
+            }
+            
+            .menu-item i {
+                margin-right: 0;
+                font-size: 20px;
+            }
+            
+            .main-content, header {
+                margin-left: 70px;
+                left: 70px;
+            }
+            
+            .calendar-container {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .filters-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-container {
+                max-width: 150px;
+            }
+        }
+        
+        @media (max-width: 576px) {            
+            .search-container {
+                display: none;
+            }
+        }
+    </style>
+    <!-- Font Awesome CSS (for icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>MediCare</h2>
+            </div>
+            <div class="sidebar-menu">
+                <a href="../Interfaces/dashboard-principal.html" class="menu-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="../Interfaces/registro-pacientes.html" class="menu-item">
+                    <i class="fas fa-user-injured"></i>
+                    <span>Pacientes</span>
+                </a>
+                <a href="../Interfaces/gestion-citas.html" class="menu-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Citas</span>
+                </a>
+                <a href="../Interfaces/seguimiento-medicamentos.html" class="menu-item">
+                    <i class="fas fa-pills"></i>
+                    <span>Medicamentos</span>
+                </a>
+                <a href="../Interfaces/panel-notificaciones.html" class="menu-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Informes</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Header -->
+        <header>
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Buscar citas...">
+            </div>
+            <div class="header-actions">
+                <div class="notification-icon">
+                    <i class="fas fa-bell fa-lg"></i>
+                    <span class="notification-count">5</span>
+                </div>
+                <div class="user-profile">
+                    <div class="user-avatar">DR</div>
+                    <span>Dr. Rodríguez</span>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <h1 class="page-title">Gestión de Citas</h1>
+            
+            <!-- Filters Section -->
+            <div class="filters-section">
+                <div class="filters-container">
+                    <div class="filter-group">
+                        <label for="specialtyFilter" class="filter-label">Especialidad</label>
+                        <select id="specialtyFilter" class="filter-control">
+                            <option value="">Todas</option>
+                            <option value="cardiology">Cardiología</option>
+                            <option value="neurology">Neurología</option>
+                            <option value="ophthalmology">Oftalmología</option>
+                            <option value="dermatology">Dermatología</option>
+                            <option value="gastroenterology">Gastroenterología</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="doctorFilter" class="filter-label">Doctor</label>
+                        <select id="doctorFilter" class="filter-control">
+                            <option value="">Todos</option>
+                            <option value="dr-rodriguez">Dr. Rodríguez</option>
+                            <option value="dr-gonzalez">Dra. González</option>
+                            <option value="dr-martinez">Dr. Martínez</option>
+                            <option value="dr-lopez">Dra. López</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="dateFilter" class="filter-label">Fecha</label>
+                        <input type="date" id="dateFilter" class="filter-control" value="2025-03-20">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="patientFilter" class="filter-label">Paciente</label>
+                        <input type="text" id="patientFilter" class="filter-control" placeholder="Nombre del paciente">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Calendar and Schedule Container -->
+            <div class="calendar-container">
+                <!-- Calendar Section -->
+                <div class="calendar-section">
+                    <div class="calendar-header">
+                        <div class="calendar-title">Calendario</div>
+                        <div class="calendar-navigation">
+                            <button class="calendar-nav-btn" title="Mes anterior">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <div class="current-month">Marzo 2025</div>
+                            <button class="calendar-nav-btn" title="Mes siguiente">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                            <div class="view-selector">
+                                <select class="filter-control">
+                                    <option value="month">Mes</option>
+                                    <option value="week">Semana</option>
+                                    <option value="day">Día</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <table class="calendar-table">
+                        <thead>
+                            <tr>
+                                <th>Lun</th>
+                                <th>Mar</th>
+                                <th>Mié</th>
+                                <th>Jue</th>
+                                <th>Vie</th>
+                                <th>Sáb</th>
+                                <th>Dom</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="calendar-date">3</div>
+                                    <div class="calendar-event">9:00 - Juan Pérez</div>
+                                    <div class="calendar-event">11:30 - María López</div>
+                                </td>
+                                <td>
+                                    <div class="calendar-date">4</div>
+                                    <div class="calendar-event">10:00 - Carlos Gómez</div>
+                                </td>
+                                <td>
+                                    <div class="calendar-date">5</div>
+                                    <div class="calendar-event urgent">8:30 - Ana Martínez</div>
+                                    <div class="calendar-event">14:15 - Pedro Sánchez</div>
+                                </td>
+                                <td>
+                                    <div class="calendar-date">6</div>
+                                </td>
+                                <td>
+                                    <div class="calendar-date">7</div>
+                                    <div class="calendar-event">9:45 - Laura Torres</div>
+                                </td>
+                                <td>
+                                    <div class="calendar-date">8</div>
+                                </td>
+                                <td>
+                                    <div class="calendar-date">9</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="calendar-date">10</div>
+                                    <div class="calendar-event">9:00 - Diego Flores</div>
+                                    <div class="calendar-event">11:00 - Sofia Ramírez</div>
+                                    <div class="event-more">+2 más</div>
+                                </td>
+                                <td>
+                                    <div class="calendar-date">11</div>
+                                </td>
+                                <td>
+                                    <div class="calendar-date">12</div>
+                                    <div class="calendar-event">15:30 - Carmen Ortiz</div>
+                                </td>
+                                <td>
+                                    <div class="calendar-date">13</div>
+                                    <div class="calendar-event">10:15 - José Herrera</div>
+                                </td>
+                                <td>
+                                    <div class="calendar-date">14</div>
+                                </td>
+                                <td>
+                                    <div class="calendar-date">15</div>
+                                </td>
+                                <td>
+                                    <div class="calendar-date">16</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="calendar-date">17</div>
+                                </td>
+                                <td>
+                                    <div class="calendar-date">18</div>
+                                    <div class="calendar-event">9:30 - Isabel Reyes</div>
+                                </td>
+                                <td>
+                                    <div class="calendar-date">19</div>
+                                    <div class="calendar-event">14:00 - Roberto Cruz</div>
+                                </td>
+                                <td>
+                                    <div class="calendar-date">20</div>
+                                    <div class="current-date">20</div>
+                                    <div class="calendar-event">9:00 - Juan Pérez</div>
+                                    <div class="calendar-event">10:30 - María López</div>
+                                    <div class="calendar-event">11:15 - Carlos Gómez</div>
+                                </td>
+                                <td>
+                                    <div class="calendar-date">21</div>
+                                    <div class="calendar-event urgent">8:00 - Teresa Jiménez</div>
+                                </td>
+                                <td>
+                                    <div class="calendar-date">22</div>
+                                </td>
+                                <td>
+                                    <div class="calendar-date">23</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="calendar-date">24</div>
+                                    <div class="calendar-event">11:30 - Francisco Vega</div>
+                                </td>
+                                <td>
+                                    <div class="calendar-date">25</div>
+                                </td>
+                                <td>
+                                    <div class="calendar-date">26</div>
+                                    <div class="calendar-event">10:00 - Lucía Mendoza</div>
+                                </td>
+                                <td>
+                                    <div class="calendar-date">27</div>
+                                </td>
+                                <td>
+                                    <div class="calendar-date">28</div>
+                                    <div class="calendar-event">15:45 - Gabriel Rojas</div>
+                                </td>
+                                <td>
+                                    <div class="calendar-date">29</div>
+                                </td>
+                                <td>
+                                    <div class="calendar-date">30</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="calendar-date">31</div>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Daily Schedule Section -->
+                <div class="schedule-section">
+                    <div class="schedule-header">
+                        <div class="schedule-title">Citas del día</div>
+                        <div class="schedule-date">20/03/2025</div>
+                    </div>
+                    
+                    <div class="schedule-list">
+                        <div class="appointment-item">
+                            <div class="appointment-time">09:00 - 09:45</div>
+                            <div class="appointment-patient">
+                                <div class="patient-name">Juan Pérez</div>
+                                <div class="appointment-type">Cardiología</div>
+                            </div>
+                            <div class="appointment-doctor">Dr. Rodríguez</div>
+                            <div class="appointment-actions">
+                                <button class="action-btn">Detalles</button>
+                                <button class="action-btn reschedule">Reprogramar</button>
+                                <button class="action-btn cancel">Cancelar</button>
+                            </div>
+                        </div>
+                        
+                        <div class="appointment-item">
+                            <div class="appointment-time">10:30 - 11:15</div>
+                            <div class="appointment-patient">
+                                <div class="patient-name">María López</div>
+                                <div class="appointment-type">Neurología</div>
+                            </div>
+                            <div class="appointment-doctor">Dra. González</div>
+                            <div class="appointment-actions">
+                                <button class="action-btn">Detalles</button>
+                                <button class="action-btn reschedule">Reprogramar</button>
+                                <button class="action-btn cancel">Cancelar</button>
+                            </div>
+                        </div>
+                        
+                        <div class="appointment-item">
+                            <div class="appointment-time">11:15 - 12:00</div>
+                            <div class="appointment-patient">
+                                <div class="patient-name">Carlos Gómez</div>
+                                <div class="appointment-type">Oftalmología</div>
+                            </div>
+                            <div class="appointment-doctor">Dr. Martínez</div>
+                            <div class="appointment-actions">
+                                <button class="action-btn">Detalles</button>
+                                <button class="action-btn reschedule">Reprogramar</button>
+                                <button class="action-btn cancel">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Nueva Cita
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal for New Appointment -->
+    <div class="modal-backdrop" id="newAppointmentModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">Nueva Cita</div>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="appointmentPatient" class="form-label">Paciente</label>
+                    <input type="text" id="appointmentPatient" class="form-control" placeholder="Buscar paciente...">
+                </div>
+                
+                <div class="form-group">
+                    <label for="appointmentDoctor" class="form-label">Doctor</label>
+                    <select id="appointmentDoctor" class="form-control">
+                        <option value="">Seleccionar doctor</option>
+                        <option value="dr-rodriguez">Dr. Rodríguez - Cardiología</option>
+                        <option value="dr-gonzalez">Dra. González - Neurología</option>
+                        <option value="dr-martinez">Dr. Martínez - Oftalmología</option>
+                        <option value="dr-lopez">Dra. López - Dermatología</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="appointmentDate" class="form-label">Fecha</label>
+                    <input type="date" id="appointmentDate" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="appointmentTime" class="form-label">Hora</label>
+                    <input type="time" id="appointmentTime" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="appointmentDuration" class="form-label">Duración</label>
+                    <select id="appointmentDuration" class="form-control">
+                        <option value="15">15 minutos</option>
+                        <option value="30" selected>30 minutos</option>
+                        <option value="45">45 minutos</option>
+                        <option value="60">60 minutos</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="appointmentNotes" class="form-label">Notas</label>
+                    <textarea id="appointmentNotes" class="form-control" rows="3" placeholder="Agregar notas relevantes sobre la cita..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline modal-close">Cancelar</button>
+                <button class="btn btn-primary">Agendar Cita</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple script for demonstration purposes
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show modal on new appointment button click
+            document.querySelector('.btn-primary').addEventListener('click', function() {
+                document.getElementById('newAppointmentModal').style.display = 'flex';
+            });
+            
+            // Close modal when clicking the close button or cancel button
+            document.querySelectorAll('.modal-close').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    document.getElementById('newAppointmentModal').style.display = 'none';
+                });
+            });
+            
+            // Close modal when clicking outside the modal
+            document.getElementById('newAppointmentModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.style.display = 'none';
+                }
+            });
+            
+            // Calendar events
+            document.querySelectorAll('.calendar-event').forEach(function(event) {
+                event.addEventListener('click', function() {
+                    alert('Detalles de la cita: ' + this.textContent);
+                });
+            });
+            
+            // Schedule actions
+            document.querySelectorAll('.action-btn').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    alert('Acción: ' + this.textContent + ' (Demo)');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
