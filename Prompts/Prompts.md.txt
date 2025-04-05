@@ -1,8 +1,7 @@
-<<<<<<< HEAD
 Prompts
 
 ------------------REQUERIMIENTOS - GENERAR REQUERIMIENTOS 
-Genera una lista de requerimientos funcionales y no funcionales para un Sistema de Gestión de Pacientes en hospitales y clínicas.Incluye funcionalidades como manejo de registros de pacientes
+Genera una lista de requerimientos funcionales y no funcionales para un Sistema de Gestión de Pacientes en hospitales y clínicas. Incluye funcionalidades como manejo de registros de pacientes
 
 -------------------REQUERIMIENTOS - TC ACEPTACION
 Eres un experto en pruebas de software, basándote en este documento de requerimientos funcionales y no funcionales, genera todos los casos de prueba de aceptación posibles en formato de tabla con las siguientes columnas
@@ -328,6 +327,4 @@ Regresamelos en formato tabla agregando al final estas 2 columnas
 
 --------------------------------AUTOMATIZADAS PLAYWRIGHT
 Actúa como un ingeniero de QA especializado en automatización de pruebas. Basado en la siguiente interfaz de usuario (formulario de registro de pacientes) 
-
->>>>>>> 890caa0a2035e934034dc53d75f81d70d06d3e45
 Genera el código necesario para hacer pruebas de validación usando Playwright C# y ZeroStep
