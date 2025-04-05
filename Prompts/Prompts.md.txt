@@ -1,3 +1,164 @@
+<<<<<<< HEAD
+Prompts
+
+------------------REQUERIMIENTOS - GENERAR REQUERIMIENTOS 
+Genera una lista de requerimientos funcionales y no funcionales para un Sistema de Gestión de Pacientes en hospitales y clínicas.Incluye funcionalidades como manejo de registros de pacientes
+
+-------------------REQUERIMIENTOS - TC ACEPTACION
+Eres un experto en pruebas de software, basándote en este documento de requerimientos funcionales y no funcionales, genera todos los casos de prueba de aceptación posibles en formato de tabla con las siguientes columnas
+ID    Título    Descripción    Precondiciones    Pasos    Datos de Prueba    Resultado Esperado    Resultado Obtenido    Estado (Pass/Fail)    Severidad (Alta/Media/Baja)
+
+--------------------PRUEBAS ACEPTACIÓN - ERRORES ACEPTACIÓN
+Actúa como un analista de QA experto en validación de requerimientos. Analiza los siguientes requerimientos funcionales y no funcionales de mi Sistema de Gestión de Pacientes  aplicando los casos de prueba adjuntos
+Si identificas posibles contradicciones, ambigüedades o inconsistencias genera una tabla de errores con las siguientes columnas
+ID    Fecha    Módulo    Descripción del Error    Pasos para Reproducir    Resultado Esperado    Resultado Obtenido    Severidad (Crítica/Alta/Media/Baja)    Estado (Abierto/En Proceso/Resuelto/Cerrado)
+Para las columnas que no se tenga de su valor, infiere un resultado posible
+
+
+---------------------DISEÑO DEL SISTEMA - CASOS DE USO
+Actúa como un arquitecto de software con experiencia en UX/UI para sistemas de salud. Basado en los siguientes requerimientos para mi Sistema de Gestión de Pacientes:
+
+Genera casos de uso detallados que cubran todas las funcionalidades requeridas. Para cada caso de uso incluye en formato de tabla las columnas:
+- ID del caso de uso (CU-XX)
+- Título descriptivo
+- Actor principal y actores secundarios (administrador, médico, enfermera, paciente, etc.)
+- Precondiciones
+- Flujo básico (paso a paso)
+- Flujos alternativos
+- Postcondiciones
+- Requerimientos relacionados
+- Prioridad de implementación
+
+
+
+---------------------DISEÑO DEL SISTEMA - 2. INTERFACES
+Actúa como un diseñador UI/UX especializado en aplicaciones médicas. Basado en los siguientes requerimientos para mi Sistema de Gestión de Pacientes:
+
+Diseña las interfaces de usuario principales. Para cada interfaz, describe:
+1. Nombre y propósito de la pantalla
+2. Elementos principales de la interfaz (formularios, tablas, botones, etc.)
+3. Flujo de navegación (cómo se conecta con otras pantallas)
+4. Consideraciones de accesibilidad y usabilidad
+5. Mockup textual detallado de la disposición y estructura
+
+---------------------DISEÑO DEL SISTEMA - 3. TC SISTEMA
+Actúa como un ingeniero de QA especializado en pruebas de sistema. Basado en los siguientes requerimientos y casos de uso  para mi Sistema de Gestión de Pacientes:
+
+Genera casos de prueba de sistema completos. Para cada caso de prueba incluye en formato de tabla:
+ID Título Descripción Precondiciones Pasos Datos de Prueba Resultado Esperado Resultado Obtenido Estado (Pass/Fail) Severidad (Alta/Media/Baja)
+
+---------------------PRUEBAS DE SISTEMA - 3. APLICA TC SISTEMA
+Actúa como un tester de QA experto en validación de sistemas. Revisa los siguientes casos de uso e interfaces de usuario (que contienen errores deliberados) para mi Sistema de Gestión de Pacientes:
+
+Ejecuta los casos de prueba de sistema adjuntos y documenta todos los errores encontrados en formato tabla con las columnas:
+ID Fecha Módulo Descripción del Error Pasos para Reproducir Resultado Esperado Resultado Obtenido Severidad Estado
+
+Para las columnas que no se tenga de su valor, infiere un resultado posible
+
+
+------------------------DISEÑO DE ARQUITECTURA - DIAGRAMAS
+Actúa como un arquitecto de software especializado en sistemas de salud. Diseña la arquitectura completa para mi Sistema de Gestión de Pacientes basado en los requerimientos adjuntos
+
+Genera los siguientes diagramas usando notación Mermaid:
+1. Diagrama de infraestructura que muestre:
+   - Componentes de hardware 
+   - Servidores web y de aplicaciones
+   - Bases de datos
+   - Sistemas de seguridad
+2. Diagrama de componentes que muestre:
+   - Módulos principales del sistema
+   - Interfaces entre componentes
+   - Patrones de diseño aplicados
+3. Diagrama de base de datos (ER) que muestre:
+   - Entidades principales
+   - Relaciones
+   - Atributos clave
+   - Consideraciones de seguridad para datos médicos
+Para cada diagrama, incluye una explicación detallada de las decisiones de arquitectura y cómo satisfacen los requerimientos.
+
+
+------------------------------DISEÑO DE ARQUITECTURA - TC INTEGRACION
+Actúa como un ingeniero de QA especializado en pruebas de integración. Basado en los siguientes diagramas de arquitectura para mi Sistema de Gestión de Pacientes:
+
+Genera casos de prueba de integración completos que validen la correcta comunicación entre componentes. Para cada caso de prueba incluye en formato de tabla con las siguientes columnas:
+ID    Título    Descripción    Precondiciones    Pasos    Datos de Prueba    Resultado Esperado    Resultado Obtenido    Estado (Pass/Fail)    Severidad (Alta/Media/Baja)
+
+
+
+---------------------------------PRUEBAS INTEGRACION - ERRORES INTEGRACIÓN
+Actúa como un ingeniero de QA especializado en pruebas de integración. Revisa los siguientes diagramas de arquitectura para mi Sistema de Gestión de Pacientes:
+
+Ejecuta los casos de prueba de integración adjuntos y documenta todos los errores encontrados. Para cada error en formato tabla incluye:
+ID Fecha Módulo Descripción del Error Pasos para Reproducir Resultado Esperado Resultado Obtenido Severidad Estado
+
+
+---------------------TC CLASES Y FLUJO
+Actúa como un ingeniero de QA especializado en pruebas. Basado en los siguientes diagramas de clases y flujo para mi Sistema de Gestión de Pacientes:
+Genera todos los casos de prueba posibles en formato de tabla con las siguientes columnas
+ID    Título    Descripción    Precondiciones    Pasos    Datos de Prueba    Resultado Esperado    Resultado Obtenido    Estado (Pass/Fail)    Severidad (Alta/Media/Baja)
+
+
+-------------------UNITARIAS - CODIGO FUNCIONAL
+Actúa como un desarrollador fullstack experimentado en sistemas de salud. Basado en los siguientes diagramas de clases para mi Sistema de Gestión de Pacientes:
+
+Implementa en c# la siguiente clase:
+1. Clase Paciente con todos sus atributos y métodos
+
+Asegúrate de:
+- Incluir validaciones robustas
+- Manejar excepciones adecuadamente
+- Implementar patrones de diseño adecuados
+- Añadir comentarios explicativos
+
+
+----------------------UNITARIAS - CODIGO NUnit
+Actúa como un ingeniero de QA especializado en pruebas automatizadas. Basado en el código funcional anterior para las clase de mi Sistema de Gestión de Pacientes:
+
+Genera código completo de pruebas unitarias usando NUnit. Incluye pruebas para:
+
+- Validación de datos de entrada
+
+- Flujos normales de ejecución
+
+- Manejo de excepciones y casos límite
+
+- Escenarios negativos
+
+- Casos especiales para datos médicos
+
+----------------------UNITARIAS ERRORES
+Eres un especialista en pruebas unitarias de software. Necesito que me ayudes a crear un registro exhaustivo de errores encontrados en las pruebas unitarias de nuestro Sistema de Gestión de Pacientes.  Considerando el código funcional adjunto y las pruebas unitarias adjuntas
+Para cada error detectado, proporciona la siguiente información en un formato de tabla de Excel:
+ID Fecha Módulo Descripción del Error Pasos para Reproducir Resultado Esperado Resultado Obtenido Severidad Estado
+
+Instrucciones adicionales:
+* Sé lo más específico posible en la descripción de cada error
+* Utiliza un lenguaje técnico preciso
+* Prioriza los errores que puedan afectar la integridad de los datos del paciente
+* Considera errores en:
+   * Validación de datos
+   * Manejo de excepciones
+
+
+-------------------------CLASIFICACION ERRORES
+Actúa como un analista de QA especializado en triaje de defectos. Revisa la siguiente lista de errores encontrados durante las pruebas de mi Sistema de Gestión de Pacientes:
+
+Para cada error, asigna:
+1. Severidad (Crítica, Alta, Media, Baja):
+   - Crítica: El sistema no funciona, pérdida de datos, problemas de seguridad graves
+   - Alta: Funcionalidad principal afectada, workaround complejo disponible
+   - Media: Problema menor, existe workaround sencillo
+   - Baja: Problema cosmético o de usabilidad menor
+2. Tipo de error:
+   - Funcional / Usabilidad / Rendimiento / Seguridad / Datos / UI / Compatibilidad
+
+Regresamelos en formato tabla agregando al final estas 2 columnas
+
+
+--------------------------------AUTOMATIZADAS PLAYWRIGHT
+Actúa como un ingeniero de QA especializado en automatización de pruebas. Basado en la siguiente interfaz de usuario (formulario de registro de pacientes) 
+
+=======
 Prompts
 
 ------------------REQUERIMIENTOS - GENERAR REQUERIMIENTOS 
@@ -168,4 +329,5 @@ Regresamelos en formato tabla agregando al final estas 2 columnas
 --------------------------------AUTOMATIZADAS PLAYWRIGHT
 Actúa como un ingeniero de QA especializado en automatización de pruebas. Basado en la siguiente interfaz de usuario (formulario de registro de pacientes) 
 
+>>>>>>> 890caa0a2035e934034dc53d75f81d70d06d3e45
 Genera el código necesario para hacer pruebas de validación usando Playwright C# y ZeroStep
